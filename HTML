@@ -1,0 +1,477 @@
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  ArrowRight, Dumbbell, Apple, Activity, Hexagon, ChevronRight, 
+  Zap, BarChart2, Camera, Brain, Users, CheckCircle2, Star, Quote, 
+  Smartphone, Layers, ShieldCheck, Clock
+} from 'lucide-react';
+
+/* --- COMPONENTES VISUAIS (BACKGROUND & ASSETS) --- */
+
+const Background = () => (
+  <div className="fixed inset-0 z-0 w-full h-full overflow-hidden bg-[#0a0a16]">
+    <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-indigo-900/30 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+    <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-purple-900/20 rounded-full blur-[120px] mix-blend-screen" />
+    <div className="absolute top-[40%] left-[30%] w-[40vw] h-[40vw] bg-fuchsia-900/10 rounded-full blur-[100px] mix-blend-screen" />
+    {/* Noise Texture */}
+    <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
+  </div>
+);
+
+const Logo = () => (
+  <div className="flex items-center gap-2 mb-8 cursor-default select-none">
+    <div className="relative flex items-center justify-center w-10 h-10">
+      <Hexagon className="w-10 h-10 text-[#00FF85] stroke-1 opacity-90" />
+      <div className="absolute w-2 h-2 bg-[#00FF85] rounded-full shadow-[0_0_15px_#00FF85]" />
+    </div>
+    <span className="text-2xl font-semibold tracking-tight text-white font-inter">Coreon</span>
+  </div>
+);
+
+/* --- COMPONENTES DE UI GENÉRICOS --- */
+
+const SectionHeader = ({ title, subtitle, align = "center" }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
+    className={`mb-16 max-w-4xl ${align === "center" ? "mx-auto text-center" : "text-left"}`}
+  >
+    <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-5xl">{title}</h2>
+    {subtitle && <p className="text-lg leading-relaxed text-blue-100/60 md:text-xl">{subtitle}</p>}
+  </motion.div>
+);
+
+const GlassCard = ({ children, className = "", delay = 0, hoverEffect = true }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+    whileHover={hoverEffect ? { y: -5, boxShadow: "0 20px 40px -10px rgba(0,0,0,0.5)" } : {}}
+    className={`relative overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl rounded-3xl ${className}`}
+  >
+    {/* Gradient Glow on Hover */}
+    <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none hover:opacity-100" />
+    {children}
+  </motion.div>
+);
+
+const FeatureItem = ({ icon: Icon, title, description }) => (
+  <div className="flex items-start gap-4 p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300">
+    <div className="flex items-center justify-center w-12 h-12 shrink-0 rounded-xl bg-[#00FF85]/10 text-[#00FF85] ring-1 ring-[#00FF85]/20">
+      <Icon className="w-6 h-6" />
+    </div>
+    <div>
+      <h4 className="mb-1 text-lg font-medium text-white">{title}</h4>
+      <p className="text-sm leading-relaxed text-white/50">{description}</p>
+    </div>
+  </div>
+);
+
+/* --- SEÇÕES DA LANDING PAGE --- */
+
+// 1. Hero (Já existente, mantido)
+const HeroSection = ({ onLogin }) => (
+  <section className="flex flex-col items-center justify-center w-full min-h-[90vh] text-center px-4 relative">
+    <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+      <Logo />
+    </motion.div>
+
+    <motion.h1 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+      className="mb-6 text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60 md:text-7xl lg:text-8xl"
+    >
+      O núcleo da <br className="hidden md:block" /> sua evolução.
+    </motion.h1>
+
+    <motion.p 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.4 }}
+      className="max-w-2xl mb-12 text-lg font-light leading-relaxed text-blue-100/70 md:text-xl"
+    >
+      Uma plataforma unificada para treinadores, nutricionistas e clientes acompanharem progresso, desempenho e saúde.
+    </motion.p>
+
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.6 }}
+      className="flex flex-col items-center gap-4"
+    >
+      <button 
+        onClick={onLogin}
+        className="group relative px-10 py-4 bg-[#00FF85] text-[#002211] font-bold text-lg rounded-full shadow-[0_0_40px_-10px_rgba(0,255,133,0.4)] hover:shadow-[0_0_60px_-10px_rgba(0,255,133,0.6)] transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 overflow-hidden"
+      >
+        <span className="relative z-10">Acessar o App</span>
+        <div className="absolute inset-0 translate-y-full bg-white/40 group-hover:translate-y-0 transition-transform duration-300" />
+        <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+      </button>
+      <span className="text-[11px] font-semibold tracking-widest text-white/30 uppercase">
+        Junte-se à revolução do fitness
+      </span>
+    </motion.div>
+  </section>
+);
+
+// 2. Benefícios Rápidos (Cards Principais)
+const MainBenefitsSection = () => (
+  <section className="w-full py-20">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {[
+        { icon: Dumbbell, title: "Para Treinadores", desc: "Programação de treinos inteligente e acompanhamento detalhado." },
+        { icon: Apple, title: "Para Nutricionistas", desc: "Planejamento alimentar flexível, macros e gestão de dieta." },
+        { icon: Activity, title: "Para Clientes", desc: "Painel diário, metas claras e visualização da evolução real." }
+      ].map((item, idx) => (
+        <GlassCard key={idx} delay={idx * 0.2} className="flex flex-col items-center p-8 text-center">
+          <div className="flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-white/5 shadow-inner-light ring-1 ring-white/10 group-hover:scale-110 transition-transform duration-300">
+            <item.icon className="w-8 h-8 text-[#00FF85]" />
+          </div>
+          <h3 className="mb-3 text-xl font-medium text-white">{item.title}</h3>
+          <p className="text-sm leading-relaxed text-white/60">{item.desc}</p>
+        </GlassCard>
+      ))}
+    </div>
+  </section>
+);
+
+// 3. Destaques (Key Features Grid)
+const KeyFeaturesSection = () => (
+  <section className="py-24">
+    <SectionHeader title="Tecnologia a favor do resultado" subtitle="Recursos poderosos desenhados para eliminar fricção e maximizar performance." />
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {[
+        { icon: Zap, title: "Treinos Dinâmicos", desc: "Prescrição com vídeos e cargas." },
+        { icon: BarChart2, title: "Evolução Visual", desc: "Gráficos de carga e peso corporal." },
+        { icon: Apple, title: "Dieta Completa", desc: "Controle de macros e substituições." },
+        { icon: Camera, title: "Diário Fotográfico", desc: "Registro visual das refeições." },
+        { icon: Brain, title: "Insights IA", desc: "Análises automáticas de progresso." },
+        { icon: Users, title: "Conexão Total", desc: "Chat integrado entre Time e Cliente." },
+        { icon: Clock, title: "Automações", desc: "Lembretes e check-ins automáticos." },
+        { icon: ShieldCheck, title: "Segurança", desc: "Dados criptografados e seguros." }
+      ].map((feature, idx) => (
+        <GlassCard key={idx} delay={idx * 0.05} className="p-6 text-left hover:bg-white/10" hoverEffect={true}>
+          <feature.icon className="w-8 h-8 mb-4 text-[#00FF85] opacity-80" />
+          <h4 className="mb-2 text-lg font-semibold text-white">{feature.title}</h4>
+          <p className="text-sm text-white/50">{feature.desc}</p>
+        </GlassCard>
+      ))}
+    </div>
+  </section>
+);
+
+// 4. Workflow (Como Funciona)
+const WorkflowSection = () => (
+  <section className="py-24 border-t border-white/5">
+    <SectionHeader title="Simplicidade em 3 passos" subtitle="Do cadastro à evolução em minutos." />
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-3 relative">
+      {/* Linha conectora (apenas desktop) */}
+      <div className="absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#00FF85]/20 to-transparent hidden md:block" />
+      
+      {[
+        { num: "01", title: "Crie sua conta", desc: "Cadastre-se como Profissional ou Cliente em segundos." },
+        { num: "02", title: "Personalize", desc: "Configure seu perfil, anamnese ou biblioteca de exercícios." },
+        { num: "03", title: "Evolua", desc: "Acompanhe métricas, ajuste rotas e conquiste resultados." }
+      ].map((step, idx) => (
+        <motion.div 
+          key={idx}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: idx * 0.2 }}
+          className="relative flex flex-col items-center text-center z-10"
+        >
+          <div className="flex items-center justify-center w-24 h-24 mb-6 text-3xl font-bold bg-[#0a0a16] border border-[#00FF85]/30 text-[#00FF85] rounded-full shadow-[0_0_30px_-5px_rgba(0,255,133,0.2)]">
+            {step.num}
+          </div>
+          <h3 className="mb-2 text-xl font-bold text-white">{step.title}</h3>
+          <p className="text-white/50 max-w-xs">{step.desc}</p>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+);
+
+// 5. Profissionais (Detalhado)
+const ProfessionalsSection = () => (
+  <section className="py-24">
+    <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24 items-center">
+      <div>
+        <div className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-widest text-[#00FF85] uppercase bg-[#00FF85]/10 rounded-full">
+          Área do Profissional
+        </div>
+        <h2 className="mb-6 text-4xl font-bold text-white">Potencialize sua consultoria.</h2>
+        <p className="mb-8 text-lg text-white/60">
+          O Coreon elimina o caos das planilhas e PDFs, centralizando a gestão dos seus alunos em uma interface fluida e inteligente.
+        </p>
+        <div className="space-y-4">
+          <FeatureItem icon={Layers} title="Biblioteca Ilimitada" description="Salve seus treinos e dietas favoritos para reutilizar com um clique." />
+          <FeatureItem icon={Activity} title="Feedback em Tempo Real" description="Receba notificações quando seu aluno completar um treino ou refeição." />
+          <FeatureItem icon={Brain} title="Anamnese Digital" description="Formulários inteligentes que já estruturam o perfil do aluno." />
+        </div>
+      </div>
+      <GlassCard className="p-8 bg-gradient-to-br from-white/5 to-transparent border-white/10 aspect-square flex items-center justify-center relative group">
+        <div className="absolute inset-0 bg-[#00FF85]/5 blur-3xl group-hover:bg-[#00FF85]/10 transition-all duration-700" />
+        {/* Abstract UI Representation */}
+        <div className="w-full space-y-4 relative z-10">
+            <div className="h-12 w-3/4 bg-white/10 rounded-lg animate-pulse" />
+            <div className="h-8 w-1/2 bg-white/5 rounded-lg" />
+            <div className="h-32 w-full bg-white/5 rounded-xl border border-white/5 flex items-center justify-center">
+                <BarChart2 className="w-12 h-12 text-white/20" />
+            </div>
+            <div className="flex gap-4">
+                <div className="h-10 w-1/3 bg-[#00FF85]/20 rounded-lg" />
+                <div className="h-10 w-1/3 bg-white/5 rounded-lg" />
+            </div>
+        </div>
+      </GlassCard>
+    </div>
+  </section>
+);
+
+// 6. Diferenciais (Checklist)
+const WhyCoreonSection = () => (
+  <section className="py-24 bg-gradient-to-b from-transparent to-[#00FF85]/5 rounded-[3rem]">
+    <SectionHeader title="Por que o Coreon é diferente?" align="center" />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      {[
+        "Plataforma Unificada (Treino + Nutri)",
+        "App Web leve (PWA) - Sem downloads pesados",
+        "Design minimalista focado em UX",
+        "Comunicação centralizada (Chat in-app)",
+        "Histórico infinito de evolução",
+        "Preço justo em Reais (R$)"
+      ].map((item, idx) => (
+        <motion.div 
+          key={idx}
+          whileHover={{ scale: 1.02 }}
+          className="flex items-center gap-3 p-4 bg-[#0a0a16]/50 border border-white/10 rounded-xl"
+        >
+          <CheckCircle2 className="w-5 h-5 text-[#00FF85]" />
+          <span className="font-medium text-white/80">{item}</span>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+);
+
+// 7. Depoimentos
+const TestimonialsSection = () => (
+  <section className="py-24">
+    <SectionHeader title="Quem usa, evolui." subtitle="Histórias de quem transformou a rotina." />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <GlassCard className="p-8 md:p-10 flex flex-col items-start text-left">
+        <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-50" />
+        <p className="text-xl font-light text-white mb-6">"Finalmente consigo acompanhar meus 40 alunos sem ficar louco com planilhas de Excel. O Coreon me deu minha vida social de volta."</p>
+        <div className="flex items-center gap-4 mt-auto">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500" />
+          <div>
+            <h5 className="font-bold text-white">Ricardo Mendes</h5>
+            <span className="text-sm text-white/50">Personal Trainer</span>
+          </div>
+        </div>
+      </GlassCard>
+      <GlassCard className="p-8 md:p-10 flex flex-col items-start text-left">
+        <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-50" />
+        <p className="text-xl font-light text-white mb-6">"O diário alimentar por foto mudou a aderência dos meus pacientes. Eles adoram ver o histórico visual do que comeram."</p>
+        <div className="flex items-center gap-4 mt-auto">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-orange-500" />
+          <div>
+            <h5 className="font-bold text-white">Dra. Amanda Silva</h5>
+            <span className="text-sm text-white/50">Nutricionista Esportiva</span>
+          </div>
+        </div>
+      </GlassCard>
+    </div>
+  </section>
+);
+
+// 8. Preços
+const PricingSection = () => (
+  <section className="py-24">
+    <SectionHeader title="Planos flexíveis" subtitle="Escolha o modelo ideal para o seu momento." />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto items-end">
+      {/* Basic */}
+      <GlassCard className="p-8 flex flex-col gap-6" hoverEffect={false}>
+        <div className="text-center">
+            <h3 className="text-xl font-medium text-white/70">Start</h3>
+            <div className="text-3xl font-bold text-white mt-2">Grátis</div>
+            <p className="text-sm text-white/40 mt-1">Para sempre</p>
+        </div>
+        <ul className="space-y-3 text-sm text-white/60">
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Até 3 alunos</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Biblioteca básica</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> App do aluno</li>
+        </ul>
+        <button className="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-colors text-white font-medium">Começar</button>
+      </GlassCard>
+
+      {/* Pro (Highlighted) */}
+      <GlassCard className="p-8 flex flex-col gap-6 bg-white/10 border-[#00FF85]/30 relative" hoverEffect={false}>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#00FF85] text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_20px_#00FF85]">Mais Popular</div>
+        <div className="text-center">
+            <h3 className="text-xl font-bold text-[#00FF85]">Profissional</h3>
+            <div className="text-4xl font-bold text-white mt-2">R$ 89<span className="text-lg text-white/40 font-normal">/mês</span></div>
+        </div>
+        <ul className="space-y-3 text-sm text-white">
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Alunos ilimitados</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Biblioteca personalizada</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Anamnese completa</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Chat ilimitado</li>
+        </ul>
+        <button className="w-full py-3 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold transition-colors shadow-lg shadow-[#00FF85]/20">Assinar Pro</button>
+      </GlassCard>
+
+      {/* Team */}
+      <GlassCard className="p-8 flex flex-col gap-6" hoverEffect={false}>
+        <div className="text-center">
+            <h3 className="text-xl font-medium text-white/70">Studio</h3>
+            <div className="text-3xl font-bold text-white mt-2">Consultar</div>
+            <p className="text-sm text-white/40 mt-1">Para equipes</p>
+        </div>
+        <ul className="space-y-3 text-sm text-white/60">
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Múltiplos treinadores</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Painel administrativo</li>
+            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Relatórios de equipe</li>
+        </ul>
+        <button className="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-colors text-white font-medium">Falar com Vendas</button>
+      </GlassCard>
+    </div>
+  </section>
+);
+
+// 9. Sobre (Storytelling)
+const AboutSection = () => (
+  <section className="py-24 px-6 text-center">
+    <div className="max-w-3xl mx-auto space-y-8">
+      <Hexagon className="w-12 h-12 text-[#00FF85] mx-auto opacity-50" />
+      <h2 className="text-3xl md:text-4xl font-bold text-white">Feito por quem vive o esporte.</h2>
+      <p className="text-xl font-light leading-relaxed text-white/70">
+        "O Coreon nasceu de uma frustração simples: a desconexão entre o treino, a nutrição e o resultado real. 
+        Criamos uma plataforma onde dados viram performance e onde o acompanhamento profissional se torna escalável, 
+        sem perder o toque humano."
+      </p>
+    </div>
+  </section>
+);
+
+// 10. Footer / CTA Final
+const FinalCTA = ({ onLogin }) => (
+  <section className="relative w-full py-32 mt-10 text-center overflow-hidden">
+    {/* Decorativo */}
+    <div className="absolute inset-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-[100%] h-[100%] bg-gradient-to-r from-blue-900/0 via-[#00FF85]/10 to-purple-900/0 blur-3xl -z-10 pointer-events-none" />
+
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="max-w-3xl mx-auto px-4"
+    >
+      <h2 className="mb-6 text-4xl font-bold text-white md:text-6xl">
+        Sua evolução começa agora.
+      </h2>
+      <p className="mb-10 text-lg text-white/60">
+        Junte-se a milhares de profissionais e atletas que escolheram a inteligência.
+      </p>
+      
+      <button 
+        onClick={onLogin}
+        className="inline-flex items-center gap-3 px-8 py-5 text-lg font-medium text-white transition-all duration-300 border border-white/20 rounded-full bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-[#00FF85]/50 hover:text-[#00FF85] group"
+      >
+        Entrar no Coreon
+        <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+      </button>
+    </motion.div>
+  </section>
+);
+
+/* --- APP PRINCIPAL --- */
+
+export default function App() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleLogin = () => {
+    console.log("Redirecting to /login");
+    window.location.href = '/login'; 
+  };
+
+  return (
+    <div className="relative min-h-screen font-sans text-white selection:bg-[#00FF85] selection:text-black">
+      <Background />
+
+      <div className="relative z-10 flex flex-col items-center w-full min-h-screen pt-12 overflow-x-hidden md:pt-20 max-w-7xl mx-auto px-4 sm:px-6">
+        
+        {/* Seções em Ordem Lógica */}
+        <HeroSection onLogin={handleLogin} />
+        
+        <div className="w-full space-y-12 md:space-y-24">
+          <MainBenefitsSection />
+          <KeyFeaturesSection />
+          <WorkflowSection />
+          <ProfessionalsSection />
+          <WhyCoreonSection />
+          <TestimonialsSection />
+          <PricingSection />
+          <AboutSection />
+          <FinalCTA onLogin={handleLogin} />
+        </div>
+
+        <footer className="w-full py-12 mt-12 border-t border-white/5 text-center md:text-left">
+            <div className="flex flex-col items-center justify-between gap-6 text-sm md:flex-row text-white/30">
+                <p>&copy; {new Date().getFullYear()} Coreon Tech. Todos os direitos reservados.</p>
+                <div className="flex gap-8">
+                    <a href="#" className="hover:text-[#00FF85] transition-colors">Termos</a>
+                    <a href="#" className="hover:text-[#00FF85] transition-colors">Privacidade</a>
+                    <a href="#" className="hover:text-[#00FF85] transition-colors">Instagram</a>
+                </div>
+            </div>
+        </footer>
+
+      </div>
+      
+      {/* Estilos Globais */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+          font-family: 'Inter', sans-serif;
+        }
+
+        .shadow-inner-light {
+          box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Smooth Scroll */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #0a0a16;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #1f1f33;
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #00FF85;
+        }
+      `}</style>
+    </div>
+  );
+}
