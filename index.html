@@ -368,44 +368,54 @@
         const PricingSection = () => (
             <section className="py-24">
                 <SectionHeader 
-                    title="Plano único"
-                    subtitle="Assinatura simples e direta. Tudo incluso."
+                    title="Plano único" 
+                    subtitle="Tudo que você precisa para evoluir com seus alunos." 
                 />
         
                 <div className="max-w-md mx-auto">
-                    <GlassCard className="p-10 flex flex-col gap-6 bg-white/10 border-[#00FF85]/30 relative">
-        
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#00FF85] text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_20px_#00FF85]">
-                            Recomendado
+                    <GlassCard 
+                        className="p-8 flex flex-col gap-6 bg-white/10 border-[#00FF85]/30 relative"
+                        hoverEffect={false}
+                    >
+                        {/* BADGE FIXADO CORRETAMENTE */}
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#00FF85] text-black text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-[0_0_20px_#00FF85]">
+                            Mais Popular
                         </div>
         
-                        <div className="text-center">
-                            <h3 className="text-2xl font-bold text-[#00FF85]">Coreon Premium</h3>
-                            <div className="text-5xl font-bold text-white mt-4">
-                                R$ 59,90
+                        <div className="text-center mt-4">
+                            <h3 className="text-2xl font-bold text-[#00FF85]">Profissional</h3>
+                            <div className="text-5xl font-bold text-white mt-2">
+                                R$ 60
                                 <span className="text-lg text-white/40 font-normal">/mês</span>
                             </div>
                         </div>
         
                         <ul className="space-y-3 text-sm text-white">
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Alunos ilimitados</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Biblioteca personalizada</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Anamnese completa</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Chat ilimitado</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Plano de treino + Plano alimentar</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Evolução visual e métricas</li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Alunos ilimitados
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Biblioteca personalizada
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Anamnese completa
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Chat ilimitado
+                            </li>
                         </ul>
         
-                        <button 
-                            className="w-full py-4 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold text-lg transition-colors shadow-lg shadow-[#00FF85]/20"
-                        >
-                            Assinar agora
+                        <button className="w-full py-3 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold transition-colors shadow-lg shadow-[#00FF85]/20">
+                            Assinar Pro
                         </button>
                     </GlassCard>
                 </div>
             </section>
         );
-
 
         // 9. Sobre
         const AboutSection = () => (
