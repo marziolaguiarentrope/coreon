@@ -376,56 +376,56 @@
         // 8. Preços
         const PricingSection = () => (
             <section className="py-24">
-                <SectionHeader title="Planos flexíveis" subtitle="Escolha o modelo ideal para o seu momento." />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto items-end">
-                    {/* Basic */}
-                    <GlassCard className="p-8 flex flex-col gap-6" hoverEffect={false}>
-                        <div className="text-center">
-                            <h3 className="text-xl font-medium text-white/70">Start</h3>
-                            <div className="text-3xl font-bold text-white mt-2">Grátis</div>
-                            <p className="text-sm text-white/40 mt-1">Para sempre</p>
+                <SectionHeader 
+                    title="Plano único" 
+                    subtitle="Tudo que você precisa para evoluir com seus alunos." 
+                />
+        
+                <div className="max-w-md mx-auto">
+                    <GlassCard 
+                        className="p-8 flex flex-col gap-6 bg-white/10 border-[#00FF85]/30 relative"
+                        hoverEffect={false}
+                    >
+                        {/* BADGE FIXADO CORRETAMENTE */}
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#00FF85] text-black text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-[0_0_20px_#00FF85]">
+                            Mais Popular
                         </div>
-                        <ul className="space-y-3 text-sm text-white/60">
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Até 3 alunos</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Biblioteca básica</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> App do aluno</li>
-                        </ul>
-                        <button className="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-colors text-white font-medium">Começar</button>
-                    </GlassCard>
-
-                    {/* Pro */}
-                    <GlassCard className="p-8 flex flex-col gap-6 bg-white/10 border-[#00FF85]/30 relative" hoverEffect={false}>
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#00FF85] text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-[0_0_20px_#00FF85]">Mais Popular</div>
-                        <div className="text-center">
-                            <h3 className="text-xl font-bold text-[#00FF85]">Profissional</h3>
-                            <div className="text-4xl font-bold text-white mt-2">R$ 89<span className="text-lg text-white/40 font-normal">/mês</span></div>
+        
+                        <div className="text-center mt-4">
+                            <h3 className="text-2xl font-bold text-[#00FF85]">Profissional</h3>
+                            <div className="text-5xl font-bold text-white mt-2">
+                                R$ 60
+                                <span className="text-lg text-white/40 font-normal">/mês</span>
+                            </div>
                         </div>
+        
                         <ul className="space-y-3 text-sm text-white">
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Alunos ilimitados</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Biblioteca personalizada</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Anamnese completa</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Chat ilimitado</li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Alunos ilimitados
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Biblioteca personalizada
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Anamnese completa
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Chat ilimitado
+                            </li>
                         </ul>
-                        <button className="w-full py-3 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold transition-colors shadow-lg shadow-[#00FF85]/20">Assinar Pro</button>
-                    </GlassCard>
-
-                    {/* Team */}
-                    <GlassCard className="p-8 flex flex-col gap-6" hoverEffect={false}>
-                        <div className="text-center">
-                            <h3 className="text-xl font-medium text-white/70">Studio</h3>
-                            <div className="text-3xl font-bold text-white mt-2">Consultar</div>
-                            <p className="text-sm text-white/40 mt-1">Para equipes</p>
-                        </div>
-                        <ul className="space-y-3 text-sm text-white/60">
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Múltiplos treinadores</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Painel administrativo</li>
-                            <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-[#00FF85]" /> Relatórios de equipe</li>
-                        </ul>
-                        <button className="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-colors text-white font-medium">Falar com Vendas</button>
+        
+                        <button className="w-full py-3 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold transition-colors shadow-lg shadow-[#00FF85]/20">
+                            Assinar Pro
+                        </button>
                     </GlassCard>
                 </div>
             </section>
         );
+
 
         // 9. Sobre
         const AboutSection = () => (
