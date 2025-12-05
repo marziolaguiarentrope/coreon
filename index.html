@@ -381,13 +381,27 @@
                     <GlassCard className="p-8 md:p-10 flex flex-col items-start text-left">
                         <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-50" />
                         <p className="text-xl font-light text-white mb-6">"O diário alimentar por foto mudou a aderência dos meus pacientes. Eles adoram ver o histórico visual do que comeram."</p>
-                        <div className="flex items-center gap-4 mt-auto">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-orange-500" />
-                            <div>
-                                <h5 className="font-bold text-white">Eduarda Tavares</h5>
-                                <span className="text-sm text-white/50">Nutricionista Esportiva</span>
+                        <div className="flex items-center gap-6 mt-8">
+    
+                            {/* FOTO COM MOLDURA ESTILIZADA */}
+                            <div className="relative w-28 h-28">
+                                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#00FF85] to-[#005f3b] blur-md opacity-40"></div>
+                        
+                                <img 
+                                    src="/alexandre.png"
+                                    alt="Alexandre Aguilera"
+                                    className="relative w-28 h-28 rounded-3xl object-cover border border-white/10 shadow-lg shadow-[#00FF85]/20"
+                                />
                             </div>
+                        
+                            {/* TEXTO AO LADO */}
+                            <div className="flex flex-col">
+                                <h4 className="text-xl font-bold text-white">Alexandre Aguilera</h4>
+                                <p className="text-white/60">Personal Trainer</p>
+                            </div>
+                        
                         </div>
+
                     </GlassCard>
                 </div>
             </section>
