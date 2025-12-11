@@ -11,7 +11,7 @@
     <!-- Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Configurações Tailwind para replicar o design system -->
+    <!-- Configurações Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -39,6 +39,8 @@
             background-color: #0a0a16;
             color: white;
             overflow-x: hidden;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            scroll-behavior: smooth;
         }
         
         /* Custom Scrollbar */
@@ -57,10 +59,10 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
 </head>
@@ -69,17 +71,16 @@
 
     <!-- Aplicação React -->
     <script type="text/babel" data-type="module">
-        // Importações centralizadas via ESM para garantir que todos usem a MESMA instância do React
         import React, { useState, useEffect } from "https://esm.sh/react@18.2.0";
         import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
         import { motion } from "https://esm.sh/framer-motion@10.16.4?deps=react@18.2.0,react-dom@18.2.0";
         import { 
             ArrowRight, Dumbbell, Apple, Activity, Hexagon, ChevronRight, 
-            Zap, BarChart2, Camera, Brain, Users, CheckCircle2, Star, Quote, 
+            Zap, BarChart2, Camera, Brain, Users, CheckCircle2, Quote, 
             Smartphone, Layers, ShieldCheck, Clock
         } from "https://esm.sh/lucide-react@0.292.0?deps=react@18.2.0,react-dom@18.2.0";
 
-        /* --- COMPONENTES VISUAIS (BACKGROUND & ASSETS) --- */
+        /* --- BACKGROUND & VISUAL --- */
 
         const Background = () => (
             <div className="fixed inset-0 z-0 w-full h-full overflow-hidden bg-[#0a0a16]">
@@ -87,22 +88,72 @@
                 <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-purple-900/20 rounded-full blur-[120px] mix-blend-screen" />
                 <div className="absolute top-[40%] left-[30%] w-[40vw] h-[40vw] bg-fuchsia-900/10 rounded-full blur-[100px] mix-blend-screen" />
                 
-                {/* textura tipo "noise" - CORRIGIDO DE COMENTÁRIO HTML PARA JSX */}
-                <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
+                {/* textura tipo "noise" */}
+                <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}
+                ></div>
             </div>
         );
 
         const Logo = () => (
-            <div className="flex items-center gap-2 mb-8 cursor-default select-none">
-                <div className="relative flex items-center justify-center w-10 h-10">
-                    <Hexagon className="w-10 h-10 text-[#00FF85] stroke-1 opacity-90" />
+            <div className="flex items-center gap-2 cursor-pointer select-none">
+                <div className="relative flex items-center justify-center w-9 h-9">
+                    <Hexagon className="w-9 h-9 text-[#00FF85] stroke-1 opacity-90" />
                     <div className="absolute w-2 h-2 bg-[#00FF85] rounded-full shadow-[0_0_15px_#00FF85]" />
                 </div>
-                <span className="text-2xl font-semibold tracking-tight text-white font-inter">Coreon</span>
+                <span className="text-xl font-semibold tracking-tight text-white">Coreon</span>
             </div>
         );
 
-        /* --- COMPONENTES DE UI GENÉRICOS --- */
+        /* --- NAVBAR --- */
+
+        const Navbar = ({ isScrolled, onLogin }) => (
+            <nav
+                className={`fixed top-0 left-0 w-full z-40 transition-all ${
+                    isScrolled
+                        ? "backdrop-blur-xl bg-black/40 border-b border-white/10"
+                        : "bg-transparent"
+                }`}
+            >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+                    <a href="#hero">
+                        <Logo />
+                    </a>
+                    <div className="hidden md:flex items-center gap-8 text-sm">
+                        <a href="#profissionais" className="text-white/70 hover:text-white transition-colors">
+                            Para profissionais
+                        </a>
+                        <a href="#features" className="text-white/70 hover:text-white transition-colors">
+                            Recursos
+                        </a>
+                        <a href="#pricing" className="text-white/70 hover:text-white transition-colors">
+                            Plano
+                        </a>
+                        <a href="#depoimentos" className="text-white/70 hover:text-white transition-colors">
+                            Resultados
+                        </a>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={onLogin}
+                            className="hidden md:inline-flex px-4 py-2 text-sm font-medium rounded-full border border-white/20 text-white hover:border-[#00FF85]/70 hover:text-[#00FF85] transition-colors"
+                        >
+                            Entrar
+                        </button>
+                        <button
+                            onClick={() => window.location.href = "https://coreon-9dc75818.base44.app"}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full bg-[#00FF85] text-black shadow-[0_0_26px_rgba(0,255,133,0.5)] hover:shadow-[0_0_40px_rgba(0,255,133,0.7)] hover:scale-[1.03] active:scale-95 transition-all"
+                        >
+                            Começar agora
+                            <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        );
+
+        /* --- COMPONENTES DE UI --- */
 
         const SectionHeader = ({ title, subtitle, align = "center" }) => (
             <motion.div 
@@ -112,8 +163,14 @@
                 transition={{ duration: 0.8 }}
                 className={`mb-16 max-w-4xl ${align === "center" ? "mx-auto text-center" : "text-left"}`}
             >
-                <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-5xl">{title}</h2>
-                {subtitle && <p className="text-lg leading-relaxed text-blue-100/60 md:text-xl">{subtitle}</p>}
+                <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-5xl">
+                    {title}
+                </h2>
+                {subtitle && (
+                    <p className="text-lg leading-relaxed text-blue-100/70 md:text-xl">
+                        {subtitle}
+                    </p>
+                )}
             </motion.div>
         );
 
@@ -123,11 +180,18 @@
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={hoverEffect ? { y: -5, boxShadow: "0 20px 40px -10px rgba(0,0,0,0.5)" } : {}}
+                whileHover={
+                    hoverEffect
+                        ? {
+                              y: -5,
+                              boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
+                              scale: 1.02,
+                          }
+                        : {}
+                }
                 className={`glass-card relative overflow-hidden rounded-3xl ${className}`}
             >
-                {/* Gradient Glow on Hover */}
-                <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none hover:opacity-100" />
+                <div className="absolute inset-0 opacity-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none transition-opacity duration-500 hover:opacity-100" />
                 {children}
             </motion.div>
         );
@@ -139,180 +203,169 @@
                 </div>
                 <div>
                     <h4 className="mb-1 text-lg font-medium text-white">{title}</h4>
-                    <p className="text-sm leading-relaxed text-white/50">{description}</p>
+                    <p className="text-sm leading-relaxed text-white/60">{description}</p>
                 </div>
             </div>
         );
 
-        /* --- SEÇÕES DA LANDING PAGE --- */
+        const Divider = () => (
+            <div className="w-full h-px my-16 md:my-24 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        );
+
+        /* --- SEÇÕES --- */
 
         // 1. Hero
-        const HeroSection = ({ onLogin }) => (
-            <section className="flex flex-col items-center justify-center w-full min-h-[90vh] text-center px-4 relative">
+        const HeroSection = () => (
+            <section id="hero" className="flex flex-col items-center justify-center w-full min-h-[90vh] text-center px-4 pt-28 md:pt-32 relative">
                 <motion.div 
-                  initial={{ opacity: 0, y: -20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  transition={{ duration: 0.8 }}
+                    initial={{ opacity: 0, y: -20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ duration: 0.8 }}
                 >
-                  <img 
-                    src="/Black and Gray Minimalist Creative Portfolio Presentation (1).png"
-                    alt="Logo"
-                    className="w-48 md:w-64 h-auto mx-auto" 
-                  />
+                    <img 
+                        src="/Black and Gray Minimalist Creative Portfolio Presentation (1).png"
+                        alt="Marca Coreon"
+                        className="w-40 md:w-56 h-auto mx-auto mb-4 md:mb-6" 
+                    />
                 </motion.div>
 
-
-                <motion.h1 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="mb-6 text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60 md:text-7xl lg:text-8xl"
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  O <span className="text-green-500 font-extrabold">core</span> da 
-                  <br className="hidden md:block" /> 
-                  sua evolução.
-                </motion.h1>
-
+                    <h1 className="mb-4 text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60 md:text-6xl lg:text-7xl">
+                        O <span className="text-green-400 font-extrabold">core</span> da 
+                        <br className="hidden md:block" /> 
+                        sua evolução real.
+                    </h1>
+                </motion.div>
 
                 <motion.p 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="max-w-2xl mb-12 text-lg font-light leading-relaxed text-blue-100/70 md:text-xl"
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="max-w-2xl mb-8 md:mb-10 text-base md:text-lg font-light leading-relaxed text-blue-100/80"
                 >
-                    Uma plataforma unificada para treinadores, nutricionistas e pacientes acompanharem progresso, desempenho e saúde.
+                    O Coreon conecta treino, nutrição e rotina em uma plataforma única.
+                    Profissionais escalam atendimento com organização total e pacientes enxergam
+                    a própria evolução com clareza e consistência.
                 </motion.p>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
                     className="flex flex-col items-center gap-4"
                 >
-                    <button 
-                        onClick={() => window.location.href = "https://coreon-9dc75818.base44.app"}
-                        className="group relative px-10 py-4 bg-[#00FF85] text-[#002211] font-bold text-lg rounded-full shadow-[0_0_40px_-10px_rgba(0,255,133,0.4)] hover:shadow-[0_0_60px_-10px_rgba(0,255,133,0.6)] transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 overflow-hidden"
-                    >
-                        <span className="relative z-10">Acessar o App</span>
-                        <div className="absolute inset-0 translate-y-full bg-white/40 group-hover:translate-y-0 transition-transform duration-300" />
-                        <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <button 
+                            onClick={() => window.location.href = "https://coreon-9dc75818.base44.app"}
+                            className="group relative px-10 py-4 bg-[#00FF85] text-[#002211] font-bold text-base md:text-lg rounded-full shadow-[0_0_40px_-10px_rgba(0,255,133,0.6)] hover:shadow-[0_0_60px_-8px_rgba(0,255,133,0.9)] transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 overflow-hidden"
+                        >
+                            <span className="relative z-10">Acessar o app agora</span>
+                            <div className="absolute inset-0 translate-y-full bg-white/40 group-hover:translate-y-0 transition-transform duration-300" />
+                            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                        </button>
 
-                    <span className="text-[11px] font-semibold tracking-widest text-white/30 uppercase">
-                        Junte-se à revolução do fitness
+                        <button
+                            onClick={() => document.getElementById("profissionais")?.scrollIntoView({ behavior: "smooth" })}
+                            className="inline-flex items-center justify-center px-8 py-4 text-sm md:text-base font-medium rounded-full border border-white/20 bg-white/5 text-white hover:border-[#00FF85]/70 hover:text-[#00FF85] hover:bg-white/10 transition-all"
+                        >
+                            Ver como funciona
+                        </button>
+                    </div>
+
+                    <span className="text-[11px] font-semibold tracking-[0.25em] text-white/40 uppercase">
+                        Centralize treino, dieta e evolução em um só lugar
                     </span>
                 </motion.div>
             </section>
         );
 
-        // 2. Benefícios Rápidos
+        // 2. Benefícios rápidos
         const MainBenefitsSection = () => (
-            <section className="w-full py-20">
+            <section className="w-full py-16 md:py-20">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {[
-                        { icon: Dumbbell, title: "Para Treinadores", desc: "Programação de treinos inteligente e acompanhamento detalhado." },
-                        { icon: Apple, title: "Para Nutricionistas", desc: "Planejamento alimentar flexível, macros e gestão de dieta." },
-                        { icon: Activity, title: "Para Pacientes", desc: "Painel diário, metas claras e visualização da evolução real." }
+                        { 
+                            icon: Dumbbell, 
+                            title: "Para Treinadores", 
+                            desc: "Prescreva treinos com vídeos, controle de carga e feedback rápido. Menos planilha solta e mais estrutura."
+                        },
+                        { 
+                            icon: Apple, 
+                            title: "Para Nutricionistas", 
+                            desc: "Crie planos alimentares flexíveis, organize macros e acompanhe a aderência de forma visual e simples."
+                        },
+                        { 
+                            icon: Activity, 
+                            title: "Para Pacientes", 
+                            desc: "Tenha um painel diário com treinos, refeições e progresso. Veja a evolução de forma clara e mantenha a constância."
+                        }
                     ].map((item, idx) => (
                         <GlassCard key={idx} delay={idx * 0.2} className="flex flex-col items-center p-8 text-center">
-                            <div className="flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-white/5 shadow-inner-light ring-1 ring-white/10 group-hover:scale-110 transition-transform duration-300">
+                            <div className="flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-white/5 shadow-inner-light ring-1 ring-white/10">
                                 <item.icon className="w-8 h-8 text-[#00FF85]" />
                             </div>
-                            <h3 className="mb-3 text-xl font-medium text-white">{item.title}</h3>
-                            <p className="text-sm leading-relaxed text-white/60">{item.desc}</p>
+                            <h3 className="mb-3 text-xl font-semibold text-white">{item.title}</h3>
+                            <p className="text-sm leading-relaxed text-white/70">{item.desc}</p>
                         </GlassCard>
                     ))}
                 </div>
             </section>
         );
 
-        // 3. Destaques
-        const KeyFeaturesSection = () => (
-            <section className="py-24">
-                <SectionHeader title="Tecnologia a favor do resultado" subtitle="Recursos poderosos desenhados para eliminar fricção e maximizar performance." />
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {[
-                        { icon: Zap, title: "Treinos Dinâmicos", desc: "Prescrição com vídeos e cargas." },
-                        { icon: BarChart2, title: "Evolução Visual", desc: "Gráficos de carga e peso corporal." },
-                        { icon: Apple, title: "Dieta Completa", desc: "Controle de macros e substituições." },
-                        { icon: Camera, title: "Diário Fotográfico", desc: "Registro visual das refeições." },
-                        { icon: Brain, title: "Insights IA", desc: "Análises automáticas de progresso." },
-                        { icon: Users, title: "Conexão Total", desc: "Chat integrado entre Time e Paciente." },
-                        { icon: Clock, title: "Automações", desc: "Lembretes e check-ins automáticos." },
-                        { icon: ShieldCheck, title: "Segurança", desc: "Dados criptografados e seguros." }
-                    ].map((feature, idx) => (
-                        <GlassCard key={idx} delay={idx * 0.05} className="p-6 text-left hover:bg-white/10" hoverEffect={true}>
-                            <feature.icon className="w-8 h-8 mb-4 text-[#00FF85] opacity-80" />
-                            <h4 className="mb-2 text-lg font-semibold text-white">{feature.title}</h4>
-                            <p className="text-sm text-white/50">{feature.desc}</p>
-                        </GlassCard>
-                    ))}
-                </div>
-            </section>
-        );
-
-        // 4. Workflow
-        const WorkflowSection = () => (
-            <section className="py-24 border-t border-white/5">
-                <SectionHeader title="Simplicidade em 3 passos" subtitle="Do cadastro à evolução em minutos." />
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-3 relative">
-                    {/* Linha conectora (apenas desktop) */}
-                    <div className="absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#00FF85]/20 to-transparent hidden md:block" />
-                    
-                    {[
-                        { num: "01", title: "Crie sua conta", desc: "Cadastre-se como Profissional ou Paciente em segundos." },
-                        { num: "02", title: "Personalize", desc: "Configure seu perfil, anamnese ou biblioteca de exercícios." },
-                        { num: "03", title: "Evolua", desc: "Acompanhe métricas, ajuste rotas e conquiste resultados." }
-                    ].map((step, idx) => (
-                        <motion.div 
-                            key={idx}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.2 }}
-                            className="relative flex flex-col items-center text-center z-10"
-                        >
-                            <div className="flex items-center justify-center w-24 h-24 mb-6 text-3xl font-bold bg-[#0a0a16] border border-[#00FF85]/30 text-[#00FF85] rounded-full shadow-[0_0_30px_-5px_rgba(0,255,133,0.2)]">
-                                {step.num}
-                            </div>
-                            <h3 className="mb-2 text-xl font-bold text-white">{step.title}</h3>
-                            <p className="text-white/50 max-w-xs">{step.desc}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-        );
-
-        // 5. Profissionais
+        // 3. Profissionais
         const ProfessionalsSection = () => (
-            <section className="py-24">
-                <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24 items-center">
+            <section id="profissionais" className="py-20 md:py-24">
+                <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
                     <div>
-                        <div className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-widest text-[#00FF85] uppercase bg-[#00FF85]/10 rounded-full">
-                            Área do Profissional
+                        <div className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-[0.25em] text-[#00FF85] uppercase bg-[#00FF85]/10 rounded-full">
+                            Área do profissional
                         </div>
-                        <h2 className="mb-6 text-4xl font-bold text-white">Potencialize sua consultoria.</h2>
-                        <p className="mb-8 text-lg text-white/60">
-                            O Coreon elimina o caos das planilhas e PDFs, centralizando a gestão dos seus alunos em uma interface fluida e inteligente.
+                        <h2 className="mb-6 text-3xl md:text-4xl font-bold text-white">
+                            Potencialize sua consultoria com organização real.
+                        </h2>
+                        <p className="mb-8 text-lg text-white/70">
+                            O Coreon elimina o caos de planilhas, conversas perdidas e arquivos soltos.
+                            Você administra treinos, dietas e evolução em uma interface fluida, pensada
+                            para quem vive o dia a dia com muitos alunos.
                         </p>
                         <div className="space-y-4">
-                            <FeatureItem icon={Layers} title="Biblioteca Ilimitada" description="Salve seus treinos e dietas favoritos para reutilizar com um clique." />
-                            <FeatureItem icon={Activity} title="Feedback em Tempo Real" description="Receba notificações quando seu aluno completar um treino ou refeição." />
-                            <FeatureItem icon={Brain} title="Anamnese Digital" description="Formulários inteligentes que já estruturam o perfil do aluno." />
+                            <FeatureItem 
+                                icon={Layers} 
+                                title="Biblioteca inteligente" 
+                                description="Salve treinos e dietas favoritos, agrupe por objetivo e reaplique com poucos cliques em novos alunos." 
+                            />
+                            <FeatureItem 
+                                icon={Activity} 
+                                title="Feedback em tempo quase real" 
+                                description="Saiba quem treinou, quem registrou refeição e quem está ficando para trás, sem ficar caçando informação." 
+                            />
+                            <FeatureItem 
+                                icon={Brain} 
+                                title="Anamnese digital estruturada" 
+                                description="Formulários que já organizam o perfil do aluno em campos úteis. Nada de textão sem padrão e difícil de revisar." 
+                            />
                         </div>
                     </div>
                     <GlassCard className="p-8 bg-gradient-to-br from-white/5 to-transparent border-white/10 aspect-square flex items-center justify-center relative group">
-                        <div className="absolute inset-0 bg-[#00FF85]/5 blur-3xl group-hover:bg-[#00FF85]/10 transition-all duration-700" />
-                        {/* Abstract UI Representation */}
+                        <div className="absolute inset-0 bg-[#00FF85]/5 blur-3xl group-hover:bg-[#00FF85]/12 transition-all duration-700" />
                         <div className="w-full space-y-4 relative z-10">
-                            <div className="h-12 w-3/4 bg-white/10 rounded-lg animate-pulse" />
-                            <div className="h-8 w-1/2 bg-white/5 rounded-lg" />
-                            <div className="h-32 w-full bg-white/5 rounded-xl border border-white/5 flex items-center justify-center">
+                            <div className="h-10 w-3/4 bg-white/10 rounded-xl animate-pulse" />
+                            <div className="h-7 w-1/2 bg-white/5 rounded-lg" />
+                            <div className="h-32 w-full bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center">
                                 <BarChart2 className="w-12 h-12 text-white/20" />
                             </div>
                             <div className="flex gap-4">
-                                <div className="h-10 w-1/3 bg-[#00FF85]/20 rounded-lg" />
-                                <div className="h-10 w-1/3 bg-white/5 rounded-lg" />
+                                <div className="h-10 w-1/3 bg-[#00FF85]/20 rounded-xl" />
+                                <div className="h-10 w-1/3 bg-white/5 rounded-xl" />
+                            </div>
+                            <div className="flex gap-3 mt-4">
+                                <div className="h-7 w-20 bg-white/5 rounded-full" />
+                                <div className="h-7 w-16 bg-white/5 rounded-full" />
+                                <div className="h-7 w-24 bg-[#00FF85]/25 rounded-full" />
                             </div>
                         </div>
                     </GlassCard>
@@ -320,26 +373,88 @@
             </section>
         );
 
+        // 4. Features principais
+        const KeyFeaturesSection = () => (
+            <section id="features" className="py-20 md:py-24">
+                <SectionHeader 
+                    title="Tecnologia a favor do resultado"
+                    subtitle="Recursos pensados para reduzir fricção, ganhar tempo e transformar dados em decisões."
+                />
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    {[
+                        { icon: Zap, title: "Treinos dinâmicos", desc: "Prescrição com vídeos, séries, cargas e anotações. Tudo em um fluxo natural para você e para o aluno." },
+                        { icon: BarChart2, title: "Evolução visual", desc: "Gráficos de carga, peso corporal e métricas que importam. Visualize tendência, não só número solto." },
+                        { icon: Apple, title: "Dieta completa", desc: "Controle de macros, substituições e observações. Acompanhamento alinhado com a rotina real do paciente." },
+                        { icon: Camera, title: "Diário fotográfico", desc: "Registro visual de refeições para aumentar a consciência alimentar e a aderência ao plano." },
+                        { icon: Brain, title: "Insights de IA", desc: "Análises automáticas de progresso para ajudar você a priorizar quem mais precisa de ajuste." },
+                        { icon: Users, title: "Comunicação centralizada", desc: "Chat direto no app, sem depender de grupos perdidos. Tudo no contexto do aluno." },
+                        { icon: Clock, title: "Automações", desc: "Lembretes, check-ins e avisos para manter o aluno em movimento sem você ter que cobrar o tempo todo." },
+                        { icon: ShieldCheck, title: "Segurança de dados", desc: "Infraestrutura com foco em privacidade e criptografia. Você cuida de pessoas, nós cuidamos da tecnologia." }
+                    ].map((feature, idx) => (
+                        <GlassCard key={idx} delay={idx * 0.05} className="p-6 text-left hover:bg-white/8" hoverEffect={true}>
+                            <feature.icon className="w-8 h-8 mb-4 text-[#00FF85] opacity-90" />
+                            <h4 className="mb-2 text-lg font-semibold text-white">{feature.title}</h4>
+                            <p className="text-sm text-white/65">{feature.desc}</p>
+                        </GlassCard>
+                    ))}
+                </div>
+            </section>
+        );
+
+        // 5. Workflow
+        const WorkflowSection = () => (
+            <section className="py-20 md:py-24 border-t border-white/5">
+                <SectionHeader 
+                    title="Fluxo simples do primeiro acesso ao resultado"
+                    subtitle="Comece em minutos. Sem curva de aprendizado infinita, sem caos de ferramentas espalhadas."
+                />
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-3 relative">
+                    <div className="absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#00FF85]/25 to-transparent hidden md:block" />
+                    
+                    {[
+                        { num: "01", title: "Crie sua conta", desc: "Cadastre-se como profissional ou paciente em poucos passos. Sem burocracia, sem cartão logo de início." },
+                        { num: "02", title: "Configure sua base", desc: "Monte sua biblioteca de treinos e dietas, organize anamneses e conecte seus primeiros alunos." },
+                        { num: "03", title: "Acompanhe e ajuste", desc: "Use gráficos, fotos, check-ins e mensagens para ajustar rotas e construir evolução real dia após dia." }
+                    ].map((step, idx) => (
+                        <motion.div 
+                            key={idx}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.18 }}
+                            className="relative flex flex-col items-center text-center z-10"
+                        >
+                            <div className="flex items-center justify-center w-24 h-24 mb-6 text-3xl font-bold bg-[#05050b] border border-[#00FF85]/40 text-[#00FF85] rounded-full shadow-[0_0_32px_rgba(0,255,133,0.35)]">
+                                {step.num}
+                            </div>
+                            <h3 className="mb-2 text-xl font-bold text-white">{step.title}</h3>
+                            <p className="text-white/65 max-w-xs">{step.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+        );
+
         // 6. Diferenciais
         const WhyCoreonSection = () => (
-            <section className="py-24 bg-gradient-to-b from-transparent to-[#00FF85]/5 rounded-[3rem]">
+            <section className="py-20 md:py-24 bg-gradient-to-b from-transparent to-[#00FF85]/6 rounded-[3rem]">
                 <SectionHeader title="Por que o Coreon é diferente?" align="center" />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
                     {[
-                        "Plataforma Unificada (Treino + Nutri)",
-                        "App Web leve (PWA) - Sem downloads pesados",
-                        "Design minimalista focado em UX",
-                        "Comunicação centralizada (Chat in-app)",
-                        "Histórico infinito de evolução",
-                        "Preço justo em Reais (R$)"
+                        "Plataforma unificada que conecta treino, nutrição e rotina diária.",
+                        "App web leve tipo PWA, acessível de qualquer dispositivo moderno.",
+                        "Design minimalista que facilita o uso até para quem não gosta de tecnologia.",
+                        "Comunicação centralizada com alunos em um único ambiente.",
+                        "Histórico completo de treinos, refeições e ajustes de protocolo.",
+                        "Preço em reais para profissionais e studios que querem escalar com previsibilidade."
                     ].map((item, idx) => (
                         <motion.div 
                             key={idx}
                             whileHover={{ scale: 1.02 }}
-                            className="flex items-center gap-3 p-4 bg-[#0a0a16]/50 border border-white/10 rounded-xl"
+                            className="flex items-center gap-3 p-4 bg-[#05050b]/80 border border-white/10 rounded-xl"
                         >
                             <CheckCircle2 className="w-5 h-5 text-[#00FF85]" />
-                            <span className="font-medium text-white/80">{item}</span>
+                            <span className="font-medium text-white/80 text-sm md:text-base">{item}</span>
                         </motion.div>
                     ))}
                 </div>
@@ -348,60 +463,57 @@
 
         // 7. Depoimentos
         const TestimonialsSection = () => (
-            <section className="py-24">
-                <SectionHeader title="Quem usa, evolui." subtitle="Histórias de quem transformou a rotina." />
+            <section id="depoimentos" className="py-20 md:py-24">
+                <SectionHeader 
+                    title="Quem usa sente na rotina e no resultado."
+                    subtitle="Profissionais que organizaram a operação e alunos que finalmente enxergam a própria evolução."
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <GlassCard className="p-8 md:p-10 flex flex-col items-start text-left">
-                        <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-50" />
-                        <p className="text-xl font-light text-white mb-6">"Finalmente consigo acompanhar meus 40 alunos sem ficar louco com planilhas de Excel. O Coreon me deu minha vida social de volta."</p>
-                        <div className="flex items-center gap-6 mt-8">
-    
-                            {/* FOTO COM MOLDURA ESTILIZADA */}
+                        <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-60" />
+                        <p className="text-xl font-light text-white mb-4">
+                            "Com o Coreon consigo acompanhar meus alunos de forma muito mais estruturada. Reduzi em quase metade o tempo que eu gastava só montando treinos e respondendo mensagem solta."
+                        </p>
+                        <p className="text-sm text-white/50 mb-6">
+                            Hoje eu sei quem está treinando, quem está travado e quem precisa de ajuste, sem abrir dez abas diferentes.
+                        </p>
+                        <div className="flex items-center gap-6 mt-4">
                             <div className="relative w-28 h-28">
                                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#00FF85] to-[#005f3b] blur-md opacity-40"></div>
-                        
                                 <img 
                                     src="/alexandre.png"
                                     alt="Alexandre Aguilera"
-                                    className="relative w-28 h-28 rounded-3xl object-cover border border-white/10 shadow-lg shadow-[#00FF85]/20"
+                                    className="relative w-28 h-28 rounded-3xl object-cover border border-white/10 shadow-lg shadow-[#00FF85]/25"
                                 />
                             </div>
-                        
-                            {/* TEXTO AO LADO */}
                             <div className="flex flex-col">
                                 <h4 className="text-xl font-bold text-white">Alexandre Aguilera</h4>
-                                <p className="text-white/60">Personal Trainer</p>
+                                <p className="text-white/60 text-sm">Personal trainer e consultor online</p>
                             </div>
-                        
                         </div>
-
-
-
                     </GlassCard>
                     <GlassCard className="p-8 md:p-10 flex flex-col items-start text-left">
-                        <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-50" />
-                        <p className="text-xl font-light text-white mb-6">"O diário alimentar por foto mudou a aderência dos meus pacientes. Eles adoram ver o histórico visual do que comeram."</p>
-                        <div className="flex items-center gap-6 mt-8">
-    
-                            {/* FOTO COM MOLDURA ESTILIZADA */}
+                        <Quote className="w-8 h-8 text-[#00FF85] mb-6 opacity-60" />
+                        <p className="text-xl font-light text-white mb-4">
+                            "O diário alimentar por foto mudou completamente a aderência de vários pacientes. Eles amam ver o histórico visual do que comeram."
+                        </p>
+                        <p className="text-sm text-white/50 mb-6">
+                            Além disso, ter treinos e dieta no mesmo lugar facilita muito a conversa, porque tudo está ligado ao objetivo real daquela pessoa.
+                        </p>
+                        <div className="flex items-center gap-6 mt-4">
                             <div className="relative w-28 h-28">
                                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#00FF85] to-[#005f3b] blur-md opacity-40"></div>
-                        
                                 <img 
                                     src="/alexandre (1).png"
                                     alt="Eduarda Tavares"
-                                    className="relative w-28 h-28 rounded-3xl object-cover border border-white/10 shadow-lg shadow-[#00FF85]/20"
+                                    className="relative w-28 h-28 rounded-3xl object-cover border border-white/10 shadow-lg shadow-[#00FF85]/25"
                                 />
                             </div>
-                        
-                            {/* TEXTO AO LADO */}
                             <div className="flex flex-col">
                                 <h4 className="text-xl font-bold text-white">Eduarda Tavares</h4>
-                                <p className="text-white/60">Nutricionista Esportiva</p>
+                                <p className="text-white/60 text-sm">Nutricionista esportiva</p>
                             </div>
-                        
                         </div>
-
                     </GlassCard>
                 </div>
             </section>
@@ -409,56 +521,60 @@
 
         // 8. Preços
         const PricingSection = () => (
-            <section className="py-24">
+            <section id="pricing" className="py-20 md:py-24">
                 <SectionHeader 
-                    title="Plano único" 
-                    subtitle="Tudo que você precisa para evoluir com seus alunos." 
+                    title="Um plano simples para você crescer sem travar na ferramenta."
+                    subtitle="Sem cobranças por aluno, sem contrato engessado. Assine, teste, sinta na rotina e cresça em cima disso."
                 />
-        
                 <div className="max-w-md mx-auto">
                     <GlassCard 
-                        className="p-8 flex flex-col gap-6 bg-white/10 border-[#00FF85]/30 relative"
+                        className="p-8 flex flex-col gap-6 bg-white/8 border-[#00FF85]/40 relative"
                         hoverEffect={false}
                     >
-                        {/* BADGE FIXADO CORRETAMENTE */}
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#00FF85] text-black text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-[0_0_20px_#00FF85]">
-                            Mais Popular
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#00FF85] text-black text-xs font-bold px-4 py-1 rounded-full uppercase tracking-[0.25em] shadow-[0_0_20px_#00FF85]">
+                            Mais escolhido
                         </div>
-        
                         <div className="text-center mt-4">
-                            <h3 className="text-2xl font-bold text-[#00FF85]">Profissional</h3>
-                            <div className="text-5xl font-bold text-white mt-2">
+                            <h3 className="text-2xl font-bold text-[#00FF85]">Plano profissional</h3>
+                            <div className="text-5xl font-bold text-white mt-3">
                                 R$ 60
-                                <span className="text-lg text-white/40 font-normal">/mês</span>
+                                <span className="text-lg text-white/50 font-normal"> por mês</span>
                             </div>
+                            <p className="mt-2 text-sm text-white/60">
+                                Ideal para personal trainers, nutricionistas e studios que querem organizar a base de alunos e ganhar escala com qualidade.
+                            </p>
                         </div>
-        
-                        <ul className="space-y-3 text-sm text-white">
+                        <ul className="space-y-3 text-sm text-white mt-4">
                             <li className="flex gap-2">
                                 <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
                                 Alunos ilimitados
                             </li>
                             <li className="flex gap-2">
                                 <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
-                                Biblioteca personalizada
+                                Biblioteca personalizada de treinos e dietas
                             </li>
                             <li className="flex gap-2">
                                 <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
-                                Anamnese completa
+                                Anamnese digital completa e organizada
                             </li>
                             <li className="flex gap-2">
                                 <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
-                                Chat ilimitado
+                                Chat integrado e histórico centralizado
+                            </li>
+                            <li className="flex gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                                Atualizações contínuas do produto sem custo extra
                             </li>
                         </ul>
-        
                         <button
                             onClick={() => window.location.href = "https://coreon-9dc75818.base44.app"}
-                            className="w-full py-3 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold transition-colors shadow-lg shadow-[#00FF85]/20"
+                            className="w-full py-3.5 mt-2 rounded-xl bg-[#00FF85] hover:bg-[#00CC6A] text-black font-bold text-sm md:text-base transition-colors shadow-lg shadow-[#00FF85]/25"
                         >
-                            Assinar Pro
+                            Assinar o Coreon
                         </button>
-
+                        <p className="text-center text-xs text-white/50 mt-1">
+                            Cancele quando quiser direto pela plataforma.
+                        </p>
                     </GlassCard>
                 </div>
             </section>
@@ -466,24 +582,28 @@
 
         // 9. Sobre
         const AboutSection = () => (
-            <section className="py-24 px-6 text-center">
+            <section className="py-20 md:py-24 px-6 text-center">
                 <div className="max-w-3xl mx-auto space-y-8">
-                    <Hexagon className="w-12 h-12 text-[#00FF85] mx-auto opacity-50" />
-                    <h2 className="text-3xl md:text-4xl font-bold text-white">Feito por quem vive o esporte.</h2>
-                    <p className="text-xl font-light leading-relaxed text-white/70">
-                        "O Coreon nasceu de uma frustração simples: a desconexão entre o treino, a nutrição e o resultado real. 
-                        Criamos uma plataforma onde dados viram performance e onde o acompanhamento profissional se torna escalável, 
-                        sem perder o toque humano."
+                    <Hexagon className="w-12 h-12 text-[#00FF85] mx-auto opacity-60" />
+                    <h2 className="text-3xl md:text-4xl font-bold text-white">
+                        Construído por quem vive esporte, rotina e ciência de dados.
+                    </h2>
+                    <p className="text-lg md:text-xl font-light leading-relaxed text-white/75">
+                        O Coreon nasceu da frustração de ver treino, nutrição e progresso desconectados.
+                        Criamos um ambiente em que profissionais enxergam a operação com clareza e alunos
+                        entendem, de forma simples, onde estão e para onde estão indo.
+                    </p>
+                    <p className="text-sm text-white/50">
+                        Não é só mais uma ferramenta. É a base da sua operação de performance.
                     </p>
                 </div>
             </section>
         );
 
-        // 10. Footer / CTA Final
+        // 10. CTA final
         const FinalCTA = ({ onLogin }) => (
-            <section className="relative w-full py-32 mt-10 text-center overflow-hidden">
-                <div className="absolute inset-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-[100%] h-[100%] bg-gradient-to-r from-blue-900/0 via-[#00FF85]/10 to-purple-900/0 blur-3xl -z-10 pointer-events-none" />
-
+            <section className="relative w-full py-24 md:py-28 mt-4 text-center overflow-hidden">
+                <div className="absolute inset-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-[100%] h-[100%] bg-gradient-to-r from-blue-900/0 via-[#00FF85]/12 to-purple-900/0 blur-3xl -z-10 pointer-events-none" />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -491,20 +611,30 @@
                     transition={{ duration: 0.8 }}
                     className="max-w-3xl mx-auto px-4"
                 >
-                    <h2 className="mb-6 text-4xl font-bold text-white md:text-6xl">
-                        Sua evolução começa agora.
+                    <h2 className="mb-6 text-3xl md:text-5xl font-bold text-white">
+                        Sua evolução e a dos seus alunos podem ser mais simples.
                     </h2>
-                    <p className="mb-10 text-lg text-white/60">
-                        Junte-se a milhares de profissionais e atletas que escolheram a inteligência.
+                    <p className="mb-10 text-base md:text-lg text-white/70">
+                        Profissionais que crescem com consistência cuidam da base.
+                        Organize hoje treinos, dietas e progresso em um só lugar e veja o impacto
+                        na sua rotina já nas próximas semanas.
                     </p>
-                    
-                    <button 
-                        onClick={onLogin}
-                        className="inline-flex items-center gap-3 px-8 py-5 text-lg font-medium text-white transition-all duration-300 border border-white/20 rounded-full bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-[#00FF85]/50 hover:text-[#00FF85] group"
-                    >
-                        Entrar no Coreon
-                        <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button 
+                            onClick={() => window.location.href = "https://coreon-9dc75818.base44.app"}
+                            className="inline-flex items-center gap-3 px-8 py-4 text-base font-semibold text-black rounded-full bg-[#00FF85] shadow-[0_0_40px_rgba(0,255,133,0.7)] hover:shadow-[0_0_60px_rgba(0,255,133,0.9)] hover:scale-[1.04] active:scale-95 transition-all"
+                        >
+                            Começar agora no Coreon
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                        <button 
+                            onClick={onLogin}
+                            className="inline-flex items-center gap-3 px-8 py-4 text-base font-medium text-white rounded-full border border-white/20 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-[#00FF85]/60 hover:text-[#00FF85] transition-all"
+                        >
+                            Já sou usuário
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                    </div>
                 </motion.div>
             </section>
         );
@@ -515,47 +645,43 @@
             const [isScrolled, setIsScrolled] = useState(false);
 
             useEffect(() => {
-                const handleScroll = () => setIsScrolled(window.scrollY > 50);
+                const handleScroll = () => setIsScrolled(window.scrollY > 40);
                 window.addEventListener('scroll', handleScroll);
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
 
             const handleLogin = () => {
-                console.log("Redirecting to /login");
-                window.location.href = '/login'; 
+                window.location.href = '/login';
             };
 
             return (
                 <div className="relative min-h-screen font-sans text-white selection:bg-[#00FF85] selection:text-black">
                     <Background />
+                    <Navbar isScrolled={isScrolled} onLogin={handleLogin} />
 
-                    <div className="relative z-10 flex flex-col items-center w-full min-h-screen pt-12 overflow-x-hidden md:pt-20 max-w-7xl mx-auto px-4 sm:px-6">
-                        
-                        <HeroSection onLogin={handleLogin} />
-                        
-                        <div className="w-full space-y-12 md:space-y-24">
-                            <MainBenefitsSection />
-                            <KeyFeaturesSection />
-                            <WorkflowSection />
-                            <ProfessionalsSection />
-                            <WhyCoreonSection />
-                            <TestimonialsSection />
-                            <PricingSection />
-                            <AboutSection />
-                            <FinalCTA onLogin={handleLogin} />
-                        </div>
+                    <div className="relative z-10 flex flex-col items-center w-full min-h-screen pt-4 md:pt-8 overflow-x-hidden max-w-7xl mx-auto px-4 sm:px-6">
+                        <HeroSection />
+                        <MainBenefitsSection />
+                        <Divider />
+                        <ProfessionalsSection />
+                        <KeyFeaturesSection />
+                        <WorkflowSection />
+                        <WhyCoreonSection />
+                        <TestimonialsSection />
+                        <PricingSection />
+                        <AboutSection />
+                        <FinalCTA onLogin={handleLogin} />
 
-                        <footer className="w-full py-12 mt-12 border-t border-white/5 text-center md:text-left">
-                            <div className="flex flex-col items-center justify-between gap-6 text-sm md:flex-row text-white/30">
+                        <footer className="w-full py-10 mt-10 border-t border-white/5 text-center md:text-left">
+                            <div className="flex flex-col items-center justify-between gap-4 text-xs md:text-sm md:flex-row text-white/35">
                                 <p>&copy; {new Date().getFullYear()} Coreon Tech. Todos os direitos reservados.</p>
-                                <div className="flex gap-8">
-                                    <a href="#" className="hover:text-[#00FF85] transition-colors">Termos</a>
+                                <div className="flex gap-6">
+                                    <a href="#" className="hover:text-[#00FF85] transition-colors">Termos de uso</a>
                                     <a href="#" className="hover:text-[#00FF85] transition-colors">Privacidade</a>
                                     <a href="#" className="hover:text-[#00FF85] transition-colors">Instagram</a>
                                 </div>
                             </div>
                         </footer>
-
                     </div>
                 </div>
             );
